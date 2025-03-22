@@ -1,32 +1,34 @@
-"use client"; 
+"use client";
 import React, { useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import FilePicker, { FilePickerProps } from "./filePicker";
+import Editor from "./Editor";
 
 export default function EditorPage() {
-  // 入力テキストを保持するステート
-  const [text, setText] = useState<string>("### Hello Markdown!");
+  const [editorContent, setEditorContent] = useState("");
+  const [selectedFileName, setSelectedFileName] = useState("");
+  const [selectedFileHandle, setSelectedFileHandle] = useState<
+    FileSystemFileHandle | undefined
+  >(undefined);
+
+  const handleFileSelect: FilePickerProps["onFileSelect"] = (
+    content,
+    fileName,
+    fileHandle
+  ) => {
+    setEditorContent(content);
+    setSelectedFileName(fileName);
+    setSelectedFileHandle(fileHandle);
+  };
 
   return (
-    <div style={{ display: "flex", gap: "2rem", padding: "1rem" }}>
-      {/* 入力用テキストエリア */}
-      <div style={{ flex: 1 }}>
-        <h2>Markdown Editor</h2>
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          rows={20}
-          style={{ width: "100%", fontFamily: "inherit" }}
-        />
-      </div>
-
-      {/* リアルタイムプレビュー */}
-      <div style={{ flex: 1, border: "1px solid #ccc", padding: "0.5rem" }}>
-        <h2>Preview</h2>
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {text}
-        </ReactMarkdown>
-      </div>
-    </div>
+    <>
+      <FilePicker onFileSelect={handleFileSelect}></FilePicker>
+      <Editor
+        content={editorContent}
+        onChange={setEditorContent}
+        fileName={selectedFileName}
+        fileHandle={selectedFileHandle}
+      ></Editor>
+    </>
   );
 }
