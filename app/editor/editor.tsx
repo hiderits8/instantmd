@@ -17,7 +17,7 @@ export default function Editor({
   onChange,
   fileName,
   fileHandle,
-  autoSaveInterval = 1000,
+  autoSaveInterval = 500,
 }: EditorProps) {
   const autoSaveTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -39,7 +39,7 @@ export default function Editor({
     if (autoSaveTimeout.current) {
       clearTimeout(autoSaveTimeout.current);
     }
-    autoSaveTimeout.current = setInterval(() => {
+    autoSaveTimeout.current = setTimeout(() => {
       saveFile();
     }, autoSaveInterval);
 
