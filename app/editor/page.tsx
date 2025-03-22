@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import FilePicker, { FilePickerProps } from "./filePicker";
+import FilePicker, { FilePickerProps } from "./FilePicker";
 import Editor from "./Editor";
 
 export default function EditorPage() {
